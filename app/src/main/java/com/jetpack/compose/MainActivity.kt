@@ -15,7 +15,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Text(text = "Hello World", color = Color.White)
+            MessageCard(name = "Aung")
         }
     }
+}
+
+@Composable
+fun MessageCard(name: String) {
+    Text(text = "Hello $name", color = Color.White)
 }
