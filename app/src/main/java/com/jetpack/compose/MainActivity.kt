@@ -1,9 +1,11 @@
 package com.jetpack.compose
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -22,8 +24,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val message = Message(author = "Aung", body = "Hi")
-            MessageCard(message = message)
+            JetpackComposeTutorialTheme {
+                val message = Message(author = "Aung", body = "Hi")
+                MessageCard(message = message)
+            }
         }
     }
 }
@@ -42,19 +46,46 @@ fun MessageCard(message: Message) {
                 .size(40.dp)
                 // Clip image to be shaped as a circle
                 .clip(CircleShape)
+                .border(1.5.dp, MaterialTheme.colors.secondary, CircleShape)
         )
-        Column {
-            Text(text = message.author, color = Color.White)
-            // Add a verticle space between the author and message texts
+        Column(modifier = Modifier.padding(start = 4.dp)) {
+            Text(
+                text = message.author,
+                color = MaterialTheme.colors.secondaryVariant,
+                style = MaterialTheme.typography.subtitle2
+            )
+            // Add a vertical space between the author and message texts
             Spacer(modifier = Modifier.height(4.dp))
-            Text(text = message.body, color = Color.White)
+            Surface(shape = MaterialTheme.shapes.medium, elevation = 1.dp) {
+                Text(
+                    text = message.body,
+                    modifier = Modifier.padding(all = 4.dp),
+                    style = MaterialTheme.typography.body2
+                )
+            }
         }
     }
 }
 
 @Composable
-@Preview
+@Preview(name = "Light Mode")
 fun PreviewMessageCard() {
-    val message = Message(author = "Aung", body = "Hi")
-    MessageCard(message = message)
+    JetpackComposeTutorialTheme {
+        val message = Message(author = "Aung", body = "Hi")
+        MessageCard(message = message)
+    }
+}
+
+@Composable
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    name = "Dark Mode"
+)
+
+fun PreviewMessageCardDarkMode() {
+    JetpackComposeTutorialTheme {
+        val message = Message(author = "Aung", body = "Hi")
+        MessageCard(message = message)
+    }
 }
